@@ -1,0 +1,21 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: tripforge_rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: tripforge
+      RABBITMQ_DEFAULT_PASS: tripforge_pass
+      RABBITMQ_DEFAULT_VHOST: pricing
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
+    volumes:
+      - tripforge_rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+
+volumes:
+  tripforge_rabbitmq_data:
